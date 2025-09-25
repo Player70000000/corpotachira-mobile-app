@@ -66,26 +66,33 @@ jobs:
 
     - name: Setup Android SDK manually
       run: |
+        # Crear directorio para Buildozer
+        mkdir -p ~/.buildozer/android/platform
+
         # Descargar Android SDK Command Line Tools
         wget -q https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
         unzip -q commandlinetools-linux-9477386_latest.zip
-        mkdir -p $HOME/android-sdk/cmdline-tools
-        mv cmdline-tools $HOME/android-sdk/cmdline-tools/latest
+        mkdir -p ~/.buildozer/android/platform/android-sdk/cmdline-tools
+        mv cmdline-tools ~/.buildozer/android/platform/android-sdk/cmdline-tools/latest
 
         # Configurar variables de entorno
-        export ANDROID_HOME=$HOME/android-sdk
+        export ANDROID_HOME=~/.buildozer/android/platform/android-sdk
         export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/33.0.0
 
         # Aceptar licencias e instalar componentes necesarios
         yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
         $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.0"
 
+        # Crear enlace simbólico para que Buildozer encuentre AIDL
+        mkdir -p ~/.buildozer/android/platform/build-tools
+        ln -sf ~/.buildozer/android/platform/android-sdk/build-tools/33.0.0 ~/.buildozer/android/platform/build-tools/33.0.0
+
         # Verificar que AIDL esté disponible
-        ls -la $ANDROID_HOME/build-tools/33.0.0/aidl || echo "AIDL no encontrado"
+        ls -la ~/.buildozer/android/platform/android-sdk/build-tools/33.0.0/aidl || echo "AIDL no encontrado"
 
     - name: Build APK with Buildozer
       run: |
-        export ANDROID_HOME=$HOME/android-sdk
+        export ANDROID_HOME=~/.buildozer/android/platform/android-sdk
         export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/33.0.0
         buildozer android debug
 
