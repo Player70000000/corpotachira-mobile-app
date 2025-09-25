@@ -26,6 +26,9 @@ jobs:
         distribution: 'temurin'
         java-version: '17'
 
+    - name: Setup Android SDK
+      uses: android-actions/setup-android@v3
+
     - name: Install system dependencies
       run: |
         sudo apt-get update -qq
@@ -51,6 +54,18 @@ jobs:
       run: |
         python3 -m pip install --upgrade pip
         python3 -m pip install buildozer cython
+
+    - name: Cache Buildozer global directory
+      uses: actions/cache@v3
+      with:
+        path: .buildozer_global
+        key: buildozer-global-${{ hashFiles('buildozer.spec') }}
+
+    - name: Cache Buildozer directory
+      uses: actions/cache@v3
+      with:
+        path: .buildozer
+        key: buildozer-${{ hashFiles('buildozer.spec') }}-${{ hashFiles('requirements.txt') }}
 
     - name: Build APK with Buildozer
       run: |
