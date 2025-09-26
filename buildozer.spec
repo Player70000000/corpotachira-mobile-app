@@ -37,7 +37,7 @@ version = 8.0
 
 # (list) Application requirements
 # comma separated e.g. requirements = sqlite3,kivy
-requirements = python3,kivy==2.1.0,kivymd==1.1.1,requests,certifi,urllib3,charset-normalizer,idna
+requirements = python3,kivy==2.1.0,kivymd==1.0.2,requests
 
 # (str) Custom source folders for requirements
 # Sets custom source for any requirements with recipes
@@ -101,16 +101,16 @@ android.permissions = android.permission.INTERNET
 #android.features = android.hardware.usb.host
 
 # (int) Target Android API, should be as high as possible.
-android.api = 33
+android.api = 31
 
 # (int) Minimum API your APK / AAB will support.
 android.minapi = 21
 
 # (int) Android SDK version to use
-android.sdk = 33
+android.sdk = 31
 
 # (str) Android NDK version to use
-android.ndk = 25b
+#android.ndk = 23c
 
 # (int) Android NDK API to use. This is the minimum API your app will support, it should usually match android.minapi.
 #android.ndk_api = 21
@@ -119,7 +119,7 @@ android.ndk = 25b
 #android.private_storage = True
 
 # (str) Android NDK directory (if empty, it will be automatically downloaded.)
-#android.ndk_path =
+android.ndk_path = /usr/local/lib/android/sdk/ndk/27.3.13750724
 
 # (str) Android SDK directory (if empty, it will be automatically downloaded.)
 android.sdk_path = ~/.buildozer/android/platform/android-sdk
@@ -283,7 +283,7 @@ android.sdk_path = ~/.buildozer/android/platform/android-sdk
 
 # (list) The Android archs to build for, choices: armeabi-v7a, arm64-v8a, x86, x86_64
 # In past, was `android.arch` as we weren't supporting builds for multiple archs at the same time.
-android.archs = arm64-v8a, armeabi-v7a
+android.archs = arm64-v8a
 
 # (int) overrides automatic versionCode computation (used in build.gradle)
 # this is not the same as app version and should only be edited if you know what you're doing

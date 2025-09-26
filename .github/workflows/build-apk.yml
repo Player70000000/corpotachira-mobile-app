@@ -88,15 +88,24 @@ jobs:
 
         # Aceptar licencias e instalar componentes necesarios
         yes | ~/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager --licenses
-        ~/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.0"
+        ~/.buildozer/android/platform/android-sdk/tools/bin/sdkmanager "platform-tools" "platforms;android-31" "build-tools;31.0.0"
 
         # Verificar que AIDL esté disponible
-        ls -la ~/.buildozer/android/platform/android-sdk/build-tools/33.0.0/aidl || echo "AIDL no encontrado"
+        ls -la ~/.buildozer/android/platform/android-sdk/build-tools/31.0.0/aidl || echo "AIDL no encontrado"
 
     - name: Build APK with Buildozer
       run: |
+        # Usar NDK del sistema que ya está instalado
         export ANDROID_HOME=~/.buildozer/android/platform/android-sdk
-        export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/33.0.0
+        export ANDROID_NDK_HOME=/usr/local/lib/android/sdk/ndk/27.3.13750724
+        export NDKAPI=21
+        export PATH=$PATH:$ANDROID_HOME/cmdline-tools/latest/bin:$ANDROID_HOME/platform-tools:$ANDROID_HOME/build-tools/31.0.0
+
+        # Mostrar configuración para debug
+        echo "ANDROID_HOME: $ANDROID_HOME"
+        echo "ANDROID_NDK_HOME: $ANDROID_NDK_HOME"
+        echo "Java version: $(java -version 2>&1 | head -1)"
+
         buildozer android debug
 
     - name: Upload APK
